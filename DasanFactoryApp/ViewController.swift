@@ -183,16 +183,19 @@ class ViewController: NSViewController {
         DispatchQueue.main.async {
             //self.deviceName.stringValue = deviceInfo.name
             let rtnInfo = self.selectDeviceImage(devicename: deviceInfo.name)
-            print(deviceInfo.vendorId)
-            print(deviceInfo.productId)
+            print("vid",deviceInfo.vendorId)
+            print("pid",deviceInfo.productId)
+            print("version",deviceInfo.version)
             let h1 = String(deviceInfo.vendorId, radix: 16)
-            print(h1) // "3d"
+            print("vid 0x",h1) // "3d"
             let h2 = String(deviceInfo.productId, radix: 16)
-            print(h2) // "3d"
+            print("pid 0x",h2) // "3d"
             
+            let h3 = String(deviceInfo.version, radix: 16)
+            print("bcdDevice 0x",h3) // "3d"
             
             self.TxtDeviceName.stringValue = rtnInfo.1
-            self.TxtUsbInfo.stringValue = h1+"/"+h2
+            self.TxtUsbInfo.stringValue = h3//h1+"/"+h2
             
             
             print(rtnInfo.0)
