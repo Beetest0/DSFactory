@@ -1,0 +1,6 @@
+framework module Pods_DasanFactoryAppTests {
+  umbrella header "Pods-DasanFactoryAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
