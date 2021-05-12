@@ -74,28 +74,13 @@ class ViewController: NSViewController {
     @IBAction func ClickHook(_ sender: Any) {
         
         
-        if (!hook)
-        {
-            print("hook on 1", hook)
-            let writeData = Data([ 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  ])
-            connectedDevice?.write(writeData);
-            self.BtnRing.isEnabled = true
-            self.TxtRing.stringValue = ""
-        }
-        else
-        {
-            print("hook off 2", hook)
-            let writeData = Data([ 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ])
-            connectedDevice?.write(writeData);
-            self.BtnRing.isEnabled = false
-            self.TxtRing.stringValue = ""
-        }
+        
         
         hook = !hook
-        
+        SendHookCmd(hook:self.hook)
         //self.BtnRing.isEnabled = true
-        self.BtnHook.isEnabled = true
-        self.BtnMute.isEnabled = true
+        //self.BtnHook.isEnabled = true
+        //self.BtnMute.isEnabled = true
     }
     
     @IBAction func ClickMute(_ sender: Any) {
@@ -198,8 +183,8 @@ class ViewController: NSViewController {
             self.TxtUsbInfo.stringValue = h3//h1+"/"+h2
             
             
-            print(rtnInfo.0)
-            print(rtnInfo.1)
+            //print(rtnInfo.0)
+            //print(rtnInfo.1)
             
             let image = NSImage(named: rtnInfo.0)
             
@@ -235,6 +220,26 @@ class ViewController: NSViewController {
         
     }
     
+    func SendHookCmd(hook:Bool)
+    {
+        //print(hook)
+        if (hook)
+        {
+            print("app->usb : hook on cmd", hook)
+            let writeData = Data([ 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  ])
+            connectedDevice?.write(writeData);
+            self.BtnRing.isEnabled = true
+            self.TxtRing.stringValue = ""
+        }
+        else
+        {
+            print("app->usb : hook off cmd", hook)
+            let writeData = Data([ 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ])
+            connectedDevice?.write(writeData);
+            self.BtnRing.isEnabled = false
+            self.TxtRing.stringValue = ""
+        }
+    }
     
     @objc func usbDisconnected(notification: NSNotification) {
         
@@ -278,15 +283,29 @@ class ViewController: NSViewController {
                     {
                         self.TxtHookStatus.stringValue = "Hook On"
                         self.ImgHook.image = NSImage(named: "bluecircle")
+                        self.SendHookCmd(hook: true)
                         self.hook = true
                         self.ring = false
+                        
+                        self.BtnRing.isEnabled = true
+                        self.BtnHook.isEnabled = true
+                        self.BtnMute.isEnabled = false
                     }
                     else if(str == "hookoff")
                     {
                         self.TxtHookStatus.stringValue = "Hook Off"
                         self.ImgHook.image = NSImage(named: "redcircle")
-                        self.hook = false
-                        self.ring = false
+                        if(self.ring)
+                        {
+                            self.SendHookCmd(hook: false)
+                            self.hook = false
+                            self.ring = false
+                            print("ring stop -> hook off")
+                        }
+                        self.BtnRing.isEnabled = false
+                        self.BtnHook.isEnabled = true
+                        self.BtnMute.isEnabled = true
+
                     }
                     
                     if(str == "mute")

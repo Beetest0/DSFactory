@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0110),
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0113),
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0120),
+        HIDMonitorData(vendorId: 0x2ea1, productId: 0x0121),
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0122),
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0123),
         HIDMonitorData(vendorId: 0x2ea1, productId: 0x0124),
